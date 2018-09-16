@@ -36,7 +36,7 @@ router.delete('/', auth, async (req, res)=>{
 
     // delete all notes
     await Note.remove({});
-    res.send('All note deleted.');
+    res.send('All notes deleted.');
 });
 
 router.get('/:id', [auth, validateObjectId], async (req, res)=>{
