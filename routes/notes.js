@@ -32,6 +32,19 @@ router.post('/', auth, async (req, res)=>{
     res.send(_.pick(note, ['_id','title', 'text', 'dateCreate', 'dateReminder', 'user']));
 });
 
+router.get('/:id', [auth, validateObjectId], async (req, res)=>{
+
+    // find the note with this given id
+    const note = await Note.findOne({
+        _id: req.params.id,
+        user: req.user._id
+    });
+    if(!note) return res.status(404).send('The note with this given id not found.');
+
+    // send note to client
+    res.send(_.pick(note, ['_id', 'title', 'text', 'dateCreate', 'dateReminder', 'user']));
+});
+
 router.put('/:id', [auth, validateObjectId], async (req, res)=>{
 
     // validate note
@@ -45,7 +58,6 @@ router.put('/:id', [auth, validateObjectId], async (req, res)=>{
    });
    if(!note) return res.status(404).send('The note with this given id not found.');
 
-
    // update to new note
    note.title = req.body.title;
    note.text = req.body.text;
@@ -53,7 +65,7 @@ router.put('/:id', [auth, validateObjectId], async (req, res)=>{
    else note.dateReminder = undefined;
    await note.save();
 
-   // send to client
+   // send note to client
    res.send(_.pick(note, ['_id', 'title', 'text', 'dateCreate', 'dateReminder', 'user']));
 
 });
