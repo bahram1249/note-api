@@ -32,6 +32,13 @@ router.post('/', auth, async (req, res)=>{
     res.send(_.pick(note, ['_id','title', 'text', 'dateCreate', 'dateReminder', 'user']));
 });
 
+router.delete('/', auth, async (req, res)=>{
+
+    // delete all notes
+    await Note.remove({});
+    res.send('All note deleted.');
+});
+
 router.get('/:id', [auth, validateObjectId], async (req, res)=>{
 
     // find the note with this given id
@@ -79,7 +86,7 @@ router.delete('/:id', [auth, validateObjectId], async(req, res)=>{
     });
     if(!note) return res.status(404).send('The note with this given id not found.');
 
-    res.send(note);
+    res.send(_.pick(note, ['_id', 'title', 'text', 'dateCreate', 'dateReminder', 'user']));
 });
 
 module.exports = router;
