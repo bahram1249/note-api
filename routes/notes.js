@@ -36,7 +36,10 @@ router.post('/', auth, async (req, res)=>{
 router.delete('/', auth, async (req, res)=>{
 
     // delete all notes
-    await Note.remove({});
+    await Note.remove({
+        _id: req.user._id
+    });
+    
     res.send('All notes deleted.');
 });
 
