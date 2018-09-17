@@ -10,7 +10,7 @@ router.get('/', auth, async (req, res)=>{
 
     // get all notes
     const notes = await Note.find({
-        email: req.user.email
+        user: req.user._id
     }).sort('-dateCreate')
     .select('-__v');
 
@@ -37,7 +37,7 @@ router.delete('/', auth, async (req, res)=>{
 
     // delete all notes
     await Note.remove({
-        _id: req.user._id
+        user: req.user._id
     });
     
     res.send('All notes deleted.');
