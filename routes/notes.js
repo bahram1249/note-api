@@ -4,6 +4,7 @@ const auth = require('../middlewares/auth');
 const validateObjectId = require('../middlewares/validateObjectId');
 const { Note , validate } = require('../models/note');
 const _ = require('lodash');
+require('express-async-errors');
 
 router.get('/', auth, async (req, res)=>{
 

@@ -4,6 +4,7 @@ const { User, validate } = require('../models/user');
 const auth = require('../middlewares/auth');
 const _ = require('lodash');
 const bcrypt = require('bcrypt');
+require('express-async-errors');
 
 router.post('/', async (req, res)=>{
     // validate user

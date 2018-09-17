@@ -3,7 +3,7 @@ const Joi = require('joi');
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
-
+require('express-async-errors');
 
 router.post('/', async(req, res)=>{
     // validate login fields
