@@ -6,12 +6,16 @@ let server;
 
 describe('Users routes', ()=>{
 
-    beforeEach(()=>{
+    beforeAll(()=>{
         server = require('../../../index');
     });
+
+    afterAll(async ()=>{
+        await server.close();
+    });
+
     afterEach(async ()=>{
         await User.remove({});
-        await server.close();
     });
 
     let name = 'bahram';

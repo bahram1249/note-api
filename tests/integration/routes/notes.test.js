@@ -6,13 +6,17 @@ let server;
 
 describe('/api/notes', ()=>{
 
-    beforeEach(()=>{
+    beforeAll(()=>{
         server = require('../../../index');
     });
+
+    afterAll(async ()=>{
+        await server.close();
+    });
+
     afterEach(async ()=>{
         await User.remove({});
         await Note.remove({});
-        await server.close();
     });
 
     // create a new test user
@@ -113,16 +117,16 @@ describe('/api/notes', ()=>{
             await createUser();
     
             // create some note
-            let note = await createNote();
-            note = await createNote();
-            note = await createNote();
-            note = await createNote();
-
+            const length = 4
+            for (let i = 0; i < length; i++) {
+                await createNote(); 
+            }
+            
             let notes = await Note.find({
                 user: userId
             });
 
-            expect(notes.length).toBe(4);
+            expect(notes.length).toBe(length);
 
             const res = await request(server)
                     .delete('/api/notes')

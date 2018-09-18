@@ -6,12 +6,15 @@ let server;
 
 describe('/api/auth routes', ()=>{
 
-    beforeEach(()=>{
+    beforeAll(()=>{
         server = require('../../../index');
     });
+    afterAll(async ()=>{
+        await server.close();
+    });
+    
     afterEach(async ()=>{
         await User.remove({});
-        await server.close();
     });
 
     async function createUser(){
