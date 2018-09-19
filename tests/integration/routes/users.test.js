@@ -15,7 +15,7 @@ describe('Users routes', ()=>{
     });
 
     afterEach(async ()=>{
-        await User.remove({});
+        await User.deleteMany({});
     });
 
     let name = 'bahram';

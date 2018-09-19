@@ -14,7 +14,7 @@ describe('/api/auth routes', ()=>{
     });
     
     afterEach(async ()=>{
-        await User.remove({});
+        await User.deleteMany({});
     });
 
     async function createUser(){
