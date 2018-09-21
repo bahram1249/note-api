@@ -36,7 +36,7 @@ router.post('/', auth, async (req, res)=>{
 router.delete('/', auth, async (req, res)=>{
 
     // delete all notes
-    await Note.deleteOne({
+    await Note.deleteMany({
         user: req.user._id
     });
     
