@@ -14,14 +14,14 @@ router.get('/', auth, async (req, res)=>{
     }).sort('-dateCreate')
     .select('-__v');
 
-    res.send(notes);
+    res.json(notes);
 });
 
 router.post('/', auth, async (req, res)=>{
 
     // validate note
     const { error } = validate(req.body);
-    if(error) return res.status(400).send(error.details[0].message);
+    if(error) return res.status(400).json({ error: error.details[0].message });
 
     // create note
     let note = _.pick(req.body, ['title', 'text', 'dateReminder']);
@@ -30,7 +30,7 @@ router.post('/', auth, async (req, res)=>{
     await note.save();
 
     // send note to client
-    res.send(_.pick(note, ['_id','title', 'text', 'dateCreate', 'dateReminder', 'user']));
+    res.json(_.pick(note, ['_id','title', 'text', 'dateCreate', 'dateReminder', 'user']));
 });
 
 router.delete('/', auth, async (req, res)=>{
@@ -40,7 +40,7 @@ router.delete('/', auth, async (req, res)=>{
         user: req.user._id
     });
     
-    res.send('All notes deleted.');
+    res.json( { result: 'All notes deleted.' });
 });
 
 router.get('/:id', [auth, validateObjectId], async (req, res)=>{
@@ -50,24 +50,24 @@ router.get('/:id', [auth, validateObjectId], async (req, res)=>{
         _id: req.params.id,
         user: req.user._id
     });
-    if(!note) return res.status(404).send('The note with this given id not found.');
+    if(!note) return res.status(404).json({ error: 'The note with this given id not found.' });
 
     // send note to client
-    res.send(_.pick(note, ['_id', 'title', 'text', 'dateCreate', 'dateReminder', 'user']));
+    res.json(_.pick(note, ['_id', 'title', 'text', 'dateCreate', 'dateReminder', 'user']));
 });
 
 router.put('/:id', [auth, validateObjectId], async (req, res)=>{
 
     // validate note
     const { error } = validate(req.body);
-    if(error) return res.status(400).send(error.details[0].message);
+    if(error) return res.status(400).json({ error: error.details[0].message });
 
    // find the note with this given id
    let note = await Note.findOne({
        _id: req.params.id,
        user: req.user._id
    });
-   if(!note) return res.status(404).send('The note with this given id not found.');
+   if(!note) return res.status(404).json({ error: 'The note with this given id not found.' });
 
    // update to new note
    note.title = req.body.title;
@@ -77,7 +77,7 @@ router.put('/:id', [auth, validateObjectId], async (req, res)=>{
    await note.save();
 
    // send note to client
-   res.send(_.pick(note, ['_id', 'title', 'text', 'dateCreate', 'dateReminder', 'user']));
+   res.json(_.pick(note, ['_id', 'title', 'text', 'dateCreate', 'dateReminder', 'user']));
 
 });
 
@@ -88,9 +88,9 @@ router.delete('/:id', [auth, validateObjectId], async(req, res)=>{
         _id: req.params.id,
         user: req.user._id
     });
-    if(!note) return res.status(404).send('The note with this given id not found.');
+    if(!note) return res.status(404).json({ error: 'The note with this given id not found.' });
 
-    res.send(_.pick(note, ['_id', 'title', 'text', 'dateCreate', 'dateReminder', 'user']));
+    res.json(_.pick(note, ['_id', 'title', 'text', 'dateCreate', 'dateReminder', 'user']));
 });
 
 module.exports = router;

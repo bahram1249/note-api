@@ -8,19 +8,19 @@ require('express-async-errors');
 router.post('/', async(req, res)=>{
     // validate login fields
     const { error } = validate(req.body);
-    if(error) return res.status(400).send(error.details[0].message);
+    if(error) return res.status(400).json({ error: error.details[0].message });
 
     // find the user with this given email
     const user = await User.findOne({ email: req.body.email });
-    if(!user) return res.status(400).send('Invalid Email or Password');
+    if(!user) return res.status(400).json({ error: 'Invalid Email or Password'} );
 
     // check if the password is true
     const validPassword = await bcrypt.compare(req.body.password, user.password);
-    if(!validPassword) return res.status(400).send('Invalid Email or Password');
+    if(!validPassword) return res.status(400).json({ error: 'Invalid Email or Password' });
 
     // if every thing is ok send the authentication
     const token = user.generateAuthToken();
-    res.header('x-auth-token', token).send(token);
+    res.header('x-auth-token', token).json({ token });
 });
 
 function validate(user){

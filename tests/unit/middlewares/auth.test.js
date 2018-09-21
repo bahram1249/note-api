@@ -33,7 +33,7 @@ describe("auth middlewares", ()=>{
             header: jest.fn()
         }
         const res = {
-            send: jest.fn().mockReturnThis(),
+            json: jest.fn().mockReturnThis(),
             status: jest.fn().mockReturnThis()
         }
         const next = jest.fn();
@@ -41,7 +41,7 @@ describe("auth middlewares", ()=>{
         auth(req, res, next);
 
         expect(res.status).toBeCalledWith(401);
-        expect(res.send).toBeCalledWith('Access denied. No token provided.');
+        expect(res.json).toBeCalledWith({"error": "Access denied. No token provided."});
     });
 
     it("Should be Invalid Token if token is invalid", ()=>{
@@ -52,7 +52,7 @@ describe("auth middlewares", ()=>{
             header: jest.fn().mockRejectedValue(token)
         }
         const res = {
-            send: jest.fn().mockReturnThis(),
+            json: jest.fn().mockReturnThis(),
             status: jest.fn().mockReturnThis()
         }
         const next = jest.fn();
@@ -60,6 +60,6 @@ describe("auth middlewares", ()=>{
         auth(req, res, next);
 
         expect(res.status).toBeCalledWith(400);
-        expect(res.send).toBeCalledWith('Invalid Token');
+        expect(res.json).toBeCalledWith({"error": "Invalid Token"});
     })
 });

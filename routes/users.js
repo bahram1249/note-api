@@ -9,11 +9,11 @@ require('express-async-errors');
 router.post('/', async (req, res)=>{
     // validate user
     const { error } = validate(req.body);
-    if(error) return res.status(400).send(error.details[0].message);
+    if(error) return res.status(400).json({ error: error.details[0].message });
 
     // looking if email existed before
     let user = await User.findOne({ email: req.body.email });
-    if (user) return res.status(400).send('User already registered.');
+    if (user) return res.status(400).json({ error: 'User already registered.' });
 
     // create user
     user = new User(_.pick(req.body, ['name', 'email', 'password']));
@@ -23,7 +23,7 @@ router.post('/', async (req, res)=>{
 
     // send responce to user
     const token = user.generateAuthToken();
-    res.header('x-auth-token', token).send(_.pick(user, ['_id', 'name', 'email']));
+    res.header('x-auth-token', token).json(_.pick(user, ['_id', 'name', 'email']));
 });
 
 router.get('/me', auth, async (req, res)=>{
@@ -32,9 +32,9 @@ router.get('/me', auth, async (req, res)=>{
     const user = await User.findOne({
         _id: req.user._id
     });
-    if(!user) return res.status(400).send('The user deleted or deactived.');
+    if(!user) return res.status(400).json({ error: 'The user deleted or deactived.' });
 
-    res.send(_.pick(user, ['_id', 'name', 'email']));
+    res.json(_.pick(user, ['_id', 'name', 'email']));
 });
 
 module.exports = router;

@@ -27,7 +27,7 @@ describe('validObjectId middlewares', ()=>{
         }
 
         const res = {
-            send: jest.fn().mockReturnThis(),
+            json: jest.fn().mockReturnThis(),
             status: jest.fn().mockReturnThis()
         }
 
@@ -36,9 +36,9 @@ describe('validObjectId middlewares', ()=>{
         validObjectId(req, res, next);
 
         expect(res.status).toBeCalled();
-        expect(res.send).toBeCalled();
+        expect(res.json).toBeCalled();
         expect(res.status).toBeCalledWith(404);
-        expect(res.send).toBeCalledWith('Invalid ID');
+        expect(res.json).toBeCalledWith({ error: 'Invalid ID' });
         expect(next).not.toBeCalled();
     });
 });
