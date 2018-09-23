@@ -16,7 +16,7 @@ const noteSchema = new mongoose.Schema({
     },
     dateCreate: {
         type: Date,
-        default: Date.now()
+        default: Date.now
     },
     dateReminder: {
         type: Date
