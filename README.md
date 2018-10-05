@@ -2,7 +2,7 @@
 nodejs restful api
 
 ## required :
-  nodejs with npm on your local machine .
+  nodejs with npm on your local machine .  
   run mongodb server on : localhost:27017 .
 
 ## install
@@ -16,7 +16,7 @@ npm test
 ```
 
 ## run api
-  open directory in command prompt or terminal.
+  open directory in command prompt or terminal.  
   then run this command
 ```
 node index.js
