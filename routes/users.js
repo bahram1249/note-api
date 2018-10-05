@@ -3,7 +3,6 @@ const router = express.Router();
 const { User, validate } = require('../models/user');
 const auth = require('../middlewares/auth');
 const _ = require('lodash');
-const bcrypt = require('bcrypt');
 require('express-async-errors');
 
 router.post('/', async (req, res)=>{
@@ -17,8 +16,7 @@ router.post('/', async (req, res)=>{
 
     // create user
     user = new User(_.pick(req.body, ['name', 'email', 'password']));
-    const salt = await bcrypt.genSalt(10);
-    user.password = await bcrypt.hash(user.password, salt);
+    await user.calculateHash();
     await user.save();
 
     // send responce to user

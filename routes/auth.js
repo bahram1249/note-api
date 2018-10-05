@@ -2,7 +2,6 @@ const { User } = require('../models/user');
 const Joi = require('joi');
 const express = require('express');
 const router = express.Router();
-const bcrypt = require('bcrypt');
 require('express-async-errors');
 
 router.post('/', async(req, res)=>{
@@ -15,7 +14,7 @@ router.post('/', async(req, res)=>{
     if(!user) return res.status(400).json({ error: 'Invalid Email or Password'} );
 
     // check if the password is true
-    const validPassword = await bcrypt.compare(req.body.password, user.password);
+    const validPassword = await user.validPassword(req.body.password);
     if(!validPassword) return res.status(400).json({ error: 'Invalid Email or Password' });
 
     // if every thing is ok send the authentication
