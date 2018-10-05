@@ -1,9 +1,24 @@
 # note-api
 nodejs restful api
 
-# required :
-nodejs on your local machine .
+## required :
+nodejs with npm on your local machine .
 run mongodb server on : localhost:27017 .
-open command prompt or terminal, type npm install , to install required modules .
-type node index.js to run note api.
+
+## install
+'''
+npm install
+'''
+
+## run test
+'''
+npm test
+'''
+
+## run api
+open directory in command prompt or terminal.
+then run this command
+'''
+node index.js
+'''
 
